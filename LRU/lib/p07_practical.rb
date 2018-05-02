@@ -1,14 +1,20 @@
 require_relative 'p05_hash_map'
 
 def can_string_be_palindrome?(string)
-  hash = HashMap.new
+  hash = Hash.new(0)
 
-  string.chars.each_with_index do |char, i|
+  string.chars.each do |char|
     hash[char] += 1
   end
 
-  not_palindrome = hash.select{|k,v| v > 3}
-  if not_palindrome
+  sum = 0
+  hash.each do |k, v|
+    if v.odd?
+      sum += v
+    end
+  end
+
+  if sum > 1
     return false
   else
     true
