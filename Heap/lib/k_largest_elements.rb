@@ -22,3 +22,20 @@ def k_largest_elements(array, k)
 
   result.store
 end
+
+
+def 500_files(arr_of_arrs)
+  # easy_shit = arr_of_arr.flatten.sort
+  result = BinaryMinHeap.new
+
+  arr_of_arrs.length.times do |i|
+    result.push(array.pop)
+  end
+
+  while array.length > 0
+    result.push(array.pop)
+    result.extract
+  end
+  
+  result.store
+end
