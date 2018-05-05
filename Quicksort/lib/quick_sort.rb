@@ -40,13 +40,21 @@ class QuickSort
     prc ||= Proc.new {|x, y| x <=> y}
     #given an array and a place to start I iterate through and move
     #partition over if the element I find is less than pivot.
+
+    #pick random pivot
     random_num = start + rand(length)
+
     array[random_num], array[start] = array[random_num], array[start]
+    #swapped array and pivot in place
     pivot = array[start]
     pivot_index = start
 
+    # our pivot is at the start so we
+    # just ned to go till the end of our window
    ((start + 1)...(start + length)).each do |idx|
       next unless prc.call(pivot, array[idx]) > 0
+
+      #move our partition
       pivot_index += 1
       array[pivot_index], array[idx] = array[idx], array[pivot_index]
     end
@@ -54,4 +62,26 @@ class QuickSort
     array[start], array[pivot_index] = array[pivot_index], array[start]
     pivot_index
   end
+
+
+  def kth_small_stuff(k)
+    #write in an in place instance method
+    left = 0
+    right = self - 1
+
+    loop do
+      return self[left] if left == right
+      pivot_idx = Array.partition(self, left, right - left + 1)
+      right - 1
+
+      if k - 1 == pivot_idx
+        return self[k-1]
+      elsif k - 1 < pivot_idx
+        right = pivot_idx - 1
+      else
+        left = pivot_idx + 1
+      end
+    end
+  end
+
 end
