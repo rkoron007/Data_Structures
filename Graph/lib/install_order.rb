@@ -9,36 +9,24 @@
 
 require_relative "graph"
 require_relative "topological_sort"
-require "byebug"
 
 def install_order(arr)
   max_value = 0
   current_verticies = Hash.new
 
   arr.each do |tuple|
-    tuple.each do |number|
-      if current_verticies.keys.include?(number)
-        next
-      else
-        max_value = number if number > max_value
 
-        current_verticies[number] = Vertex.new(number)
-      end
-    end
+    vertices[tuple[0]] = Vertex.new(tuple[0]) unless vertices[tuple[0]]
+    vertices[tuple[1]] = Vertex.new(tuple[1]) unless vertices[tuple[1]]
+    Edge.new(current_verticies[tuple[1]], current_verticies[tuple[0]])
 
-    Edge.new(current_verticies[tuple[0]], current_verticies[tuple[1]])
+    max_value = tuple.max if tuple.max > max_value
   end
 
-  range = (1..max_value)
-  current_numbers = current_verticies.keys
-
-  extras = range.reject{|el| current_numbers.include?(el)}
-  if extras
-    extras.each do |el|
-      current_verticies[el] = Vertex.new(el)
-    end
+  range = []
+  (1..max_value).each do |i|
+    range << i unless current_verticies[i]
   end
-  arr = topological_sort(current_verticies.values)
 
-
+  range + topological_sort(current_verticies.values).map {|v| v.value}
 end
